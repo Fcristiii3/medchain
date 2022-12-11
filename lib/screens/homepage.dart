@@ -54,7 +54,7 @@ class HomePageState extends State<HomePage> {
   }
   Future<void> _getProducts(String name) async {
     String upperName = name.toUpperCase();
-    String url = 'https://2048-82-79-151-78.eu.ngrok.io/medicines/$upperName';
+    String url = 'https://ab1e-109-166-139-211.eu.ngrok.io/medicines/$upperName';      ///change the url linking hte backend with the frontend(server ngrok)
     Response response = await get(Uri.parse(url));
     setState(() {
       _isLoading = false;
