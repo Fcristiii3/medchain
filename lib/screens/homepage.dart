@@ -2,13 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gif/flutter_gif.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart';
 import 'package:medchain/api/product_api.dart';
 import 'package:medchain/components/product_component.dart';
+import 'package:medchain/models/product_model.dart';
 
-import '../models/product_model.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -55,16 +54,14 @@ class HomePageState extends State<HomePage> {
   }
   Future<void> _getProducts(String name) async {
     String upperName = name.toUpperCase();
-    String url = 'https://b95e-82-79-151-78.eu.ngrok.io/medicines/$upperName';
+    String url = 'https://2048-82-79-151-78.eu.ngrok.io/medicines/$upperName';
     Response response = await get(Uri.parse(url));
     setState(() {
       _isLoading = false;
     });
-    print(response.statusCode);
     List<dynamic> jsonList = jsonDecode(response.body) as List<dynamic>;
     for(dynamic item in jsonList) {
         Product product = Product.fromJson(item as Map<String, dynamic>);
-        print(product);
         products.add(product);
     }
   }
@@ -95,7 +92,7 @@ class HomePageState extends State<HomePage> {
       body: _isLoading
           ?  const SafeArea(child: Center(
           child: CircularProgressIndicator(color: Colors.black,)))
-          : Padding(
+              : Padding(
               padding: const EdgeInsets.only(top: 42, left: 24, right: 24),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
@@ -103,7 +100,7 @@ class HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   TextField(
-                    cursorColor: Color(0xFF39C7A6),
+                    cursorColor: const Color(0xFF39C7A6),
                     controller: _myController,
                     decoration: InputDecoration(
                       filled: true,
@@ -123,13 +120,25 @@ class HomePageState extends State<HomePage> {
                             products = [];
                           });
                           await _getProducts(_myController.text);
-                            print(products);
                         },
                       ),
                       hintText: "Cauta un produs",
+
                     ),
+                    onSubmitted: (String str) async {
+                      setState(()  {
+                        _isLoading = true;
+                        products = [];
+                      });
+                      await _getProducts(_myController.text);
+                    },
                   ),
-                  Expanded(
+                  products.isEmpty && _myController.text.isNotEmpty?
+                  const Padding(
+                    padding: EdgeInsets.only(top: 150),
+                    child: Center(child: Text("Nu am gasit acest produs.", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),),),
+                  )
+                  : Expanded(
                     child: ListView.separated(
                       itemCount: products.length,
                       itemBuilder: (BuildContext context, int index) {

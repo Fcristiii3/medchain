@@ -1,11 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:medchain/models/product_model.dart';
 
-import '../api/location_api.dart';
-import '../models/product_model.dart';
 
 import '../screens/pharmacy_details.dart';
 
@@ -49,7 +47,7 @@ class ProductComponent extends StatelessWidget {
                   Text(product.name!, style: const TextStyle(fontWeight: FontWeight.w500,fontSize: 16),),
                   Row(
                     children: [
-                      Text("${product.price}",style: const  TextStyle(fontWeight: FontWeight.w700,fontSize: 14,color:Color(0xFF14AD6D)),),
+                      Text("${product.price} RON",style: const  TextStyle(fontWeight: FontWeight.w700,fontSize: 14,color:Color(0xFF14AD6D)),),
                       const Padding(
                         padding: EdgeInsets.all(8.0),
                         child: Icon(Icons.circle,size: 6),

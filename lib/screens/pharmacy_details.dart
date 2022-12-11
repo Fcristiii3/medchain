@@ -5,8 +5,8 @@ import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:medchain/api/location_api.dart';
 import 'package:medchain/components/map_component.dart';
+import 'package:medchain/models/product_model.dart';
 
-import '../models/product_model.dart';
 
 
 class PharmacyDetails extends StatefulWidget {
@@ -20,6 +20,33 @@ class _PharmacyDetailsState extends State<PharmacyDetails> {
   List<Product> products = [];
   int nrItems = 0;
   String address = "";
+
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text('Produsele au fost adaugate in cos!'),
+                Text('Multumim!'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Inchide'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   Future<void> getPlace(LatLng position) async {
   final coordinates = new Coordinates(position.latitude, position.longitude);
@@ -36,12 +63,13 @@ class _PharmacyDetailsState extends State<PharmacyDetails> {
     Response response = await dio.get(apiurl); //send get request to API URL
 
     if(response.statusCode == 200){ //if connection is successful
-      Map data = response.data; //get response data
-      if(data["status"] == "OK"){ //if status is "OK" returned from REST API
+      Map data = response.data;
+      print(data);//get response data
+      if(data["status"] == "OK"){//if status is "OK" returned from REST API
         if(data["results"].length > 0){ //if there is atleast one address
           Map firstresult = data["results"][0]; //select the first address
 
-          address = firstresult["formatted_address"]; //get the address
+          address = firstresult['formatted_address']; //get the address
 
           //you can use the JSON data to get address in your own format
 
@@ -59,7 +87,7 @@ class _PharmacyDetailsState extends State<PharmacyDetails> {
 
   @override
   void initState() {
-    convertToAddress(widget.product.positionX!, widget.product.positionX!);
+    convertToAddress(widget.product.positionX!, widget.product.positionY!);
     // TODO: implement
     super.initState();
   }
@@ -115,21 +143,7 @@ class _PharmacyDetailsState extends State<PharmacyDetails> {
                             ),
                             SizedBox(height: 6),
                             Text(
-                              "Strada Nicolaie Titulescu, nr.34",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0xFF676768)),
-                            ),
-                            Text(
-                              "Cluj-Napoca, Cluj",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0xFF676768)),
-                            ),
-                            Text(
-                              "400618",
+                              address,
                               style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w400,
@@ -186,6 +200,7 @@ class _PharmacyDetailsState extends State<PharmacyDetails> {
                 onTap: () async {
                   //getPlace(widget.product.pharmacy.position);
                     setState(() {
+                      if(nrItems > 0)
                       nrItems-=1;
                     });
                 },
@@ -240,6 +255,12 @@ class _PharmacyDetailsState extends State<PharmacyDetails> {
                             fontSize: 16, fontWeight: FontWeight.w500,color: Colors.white))),
               ),
               onTap: () {
+                    if(nrItems>0){
+                      _showMyDialog();
+                    }
+                    setState(() {
+                      nrItems = 0;
+                    });
 
               }
               ),

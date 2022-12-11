@@ -64,7 +64,7 @@ class _MapComponentState extends State<MapComponent> {
 }
 
 _launchURLBrowser(LatLng position) async {
-  String url = 'https://www.google.com/maps/search/?api=1&query=${position.latitude}%2C${position.latitude}';
+  String url = 'https://www.google.com/maps/search/?api=1&query=${position.latitude}%2C${position.longitude}';
   if (await canLaunchUrl(Uri.parse(url))) {
     await launchUrl(Uri.parse(url));
   } else {
