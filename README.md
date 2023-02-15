@@ -1,16 +1,8 @@
-# medchain
+# Medchain
 
-A new Flutter project.
+A flutter app for pharmacies where people could order/reserve for pickup for medicine
 
-## Getting Started
+After searching for a product, the app will give results based on price, also showing the distance. Moreover, users can click on the desired pharmacy and see details and the location. The app also provides the maps function, for ease of use in case of pickup option
 
-This project is a starting point for a Flutter application.
+<div align="center"> <video src=https://user-images.githubusercontent.com/99788242/219059463-4ba8b1c9-700b-4c0e-8c51-12b6a4296dad.mp4/> <div/>
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
