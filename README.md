@@ -1,6 +1,6 @@
 # Medchain
 
-A flutter app for pharmacies where people could order/reserve for pickup for medicine
+A flutter app idea for pharmacies where people could order/reserve for pickup for medicine
 
 After searching for a product, the app will give results based on price, also showing the distance. Moreover, users can click on the desired pharmacy and see details and the location. The app also provides the maps function, for ease of use in case of pickup option
 
